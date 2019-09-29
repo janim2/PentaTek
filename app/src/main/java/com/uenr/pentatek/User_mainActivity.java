@@ -30,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +61,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 
 public class User_mainActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -76,7 +78,9 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
     final int LOCATION_REQUEST_CODE = 1;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     private GoogleMap mMap;
-    private String vehicle_problem_;
+    private String vehicle_problem_, problem_text;
+    private DatabaseReference reference;
+    private FirebaseAuth mauth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +91,8 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
+        mauth = FirebaseAuth.getInstance();
 
         welcome_message = findViewById(R.id.welcome_message);
         distress_button = findViewById(R.id.distress_button);
@@ -187,6 +193,7 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
         final EditText problem_statement_editText;
         final Spinner problem_selection_spinner;
         final Button done_button;
+        final ProgressBar loading;
 
         final String[] car_problems = {"Car won't start", "Flat tyre", "Over heating engine"};
 
@@ -199,6 +206,7 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
         or_text = (TextView) view_confirmation_dialogue.findViewById(R.id.or_message_text);
         problem_statement_editText = (EditText) view_confirmation_dialogue.findViewById(R.id.or_message_editText);
         done_button = (Button)view_confirmation_dialogue.findViewById(R.id.done_button);
+        loading = (ProgressBar) view_confirmation_dialogue.findViewById(R.id.loading);
 
 //        cancelpopup.setTypeface(lovelo);
 //        verification_message.setTypeface(lovelo);
@@ -227,9 +235,48 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
         ArrayAdapter<String> the_vehicle = new ArrayAdapter<String>(User_mainActivity.this,android.R.layout.simple_list_item_1,car_problems);
         problem_selection_spinner.setAdapter(the_vehicle);
 
+        done_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isNetworkAvailable()){
+                   problem_text = problem_statement_editText.getText().toString().trim();
+                   if(!problem_text.equals("")){
+                        loading.setVisibility(View.VISIBLE);
+                        saveToDatbase(problem_text);
+                        loading.setVisibility(View.GONE);
+                        success_message.setText("Problem reported");
+                        success_message.setTextColor(getResources().getColor(R.color.red));
+                        success_message.setVisibility(View.VISIBLE);
+                        view_confirmation_dialogue.dismiss();
+                   }else{
+                       loading.setVisibility(View.VISIBLE);
+                       saveToDatbase(vehicle_problem_);
+                       loading.setVisibility(View.GONE);
+                       success_message.setText("Problem reported");
+                       success_message.setTextColor(getResources().getColor(R.color.red));
+                       success_message.setVisibility(View.VISIBLE);
+                       view_confirmation_dialogue.dismiss();
+                   }
+                }else{
+                    success_message.setText("No internet connection");
+                    success_message.setTextColor(getResources().getColor(R.color.red));
+                    success_message.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
 
         Objects.requireNonNull(view_confirmation_dialogue.getWindow()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.ash_1)));
         view_confirmation_dialogue.show();
+    }
+
+    private void saveToDatbase(String vehicle_problem_) {
+        Random g = new Random();
+        int number = g.nextInt(999999);
+        String problem_id = "prob_"+number;
+        reference = FirebaseDatabase.getInstance().getReference("problems").child("company1")
+                .child(mauth.getCurrentUser().getUid());
+        reference.child("problem_description").setValue(vehicle_problem_);
     }
 
     @Override
@@ -306,6 +353,5 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
         }
         buildGoogleApiClient();
         mMap.setMyLocationEnabled(true);
-
     }
 }

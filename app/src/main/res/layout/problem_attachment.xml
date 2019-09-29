@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/attachment_layout"
     android:padding="10dp">
 
     <TextView
@@ -10,6 +12,7 @@
         android:text="Customer name"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp"
+        android:id="@+id/customer_name"
         android:drawablePadding="10dp"
         android:drawableLeft="@drawable/name"/>
 
@@ -17,10 +20,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="13sp"
+        android:id="@+id/phone_number"
         android:textColor="@color/colorPrimary"
         android:text="phone number"
         android:drawablePadding="10dp"
         android:drawableLeft="@drawable/phone"/>
-
 
 </LinearLayout>

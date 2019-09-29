@@ -98,7 +98,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Address"
+                android:text="Phone Number"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp"/>
@@ -106,9 +106,10 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="address"
+                android:hint="number"
                 android:textSize="13sp"
-                android:inputType="textMultiLine"
+                android:inputType="phone"
+                android:maxLength="10"
                 android:textColorHint="@android:color/darker_gray"
                 android:textColor="@color/colorPrimary"
                 android:background="@android:drawable/editbox_background"/>

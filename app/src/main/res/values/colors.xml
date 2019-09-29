@@ -5,4 +5,6 @@
     <color name="colorAccent">#1089ff</color>
     <color name="ash_1">#e5e5e5</color>
     <color name="ash_2">#eeeeee</color>
+    <color name="green">#034903</color>
+    <color name="red">#FF0000</color>
 </resources>
