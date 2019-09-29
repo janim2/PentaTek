@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ash_1"
+    tools:context=".User_mainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome, user"
+            android:textSize="13sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/welcome_message"
+            android:textStyle="bold"
+            android:padding="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your current location"
+            android:textSize="13sp"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/location_description"
+            android:textStyle="bold"
+            android:paddingLeft="10dp" />
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="5dp"
+            tools:context=".Automobile_MapsActivity" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recent problems"
+            android:textSize="13sp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/previous_distress"
+            android:textStyle="bold"
+            android:paddingLeft="10dp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Recent problems"
+            android:textSize="13sp"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/no_previous_distress"
+            android:textStyle="bold"
+            android:paddingLeft="10dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="In Distress"
+            android:textSize="13sp"
+            android:layout_marginTop="50dp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@android:color/white"
+            android:id="@+id/distress_button"/>
+
+    </LinearLayout>
+
+
+
+</ScrollView>

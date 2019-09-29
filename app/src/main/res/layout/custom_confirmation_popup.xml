@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="270dp"
+    android:layout_height="400dp"
+    android:padding="5dp"
+    android:layout_gravity="center"
+    android:gravity="center_vertical"
+    style="@style/PopupStyle">
+
+    <TextView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:text="X"
+        android:textColor="@android:color/holo_red_dark"
+        android:textStyle="bold"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:id="@+id/cancel"
+        android:background="@drawable/cancel_background"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Describe problem of vehicle"
+        android:layout_marginTop="20dp"
+        android:id="@+id/problem_description_text"
+        android:textSize="12sp"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select problem type"
+        android:textSize="12sp"
+        android:id="@+id/select_problem_type_text"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="10dp"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/select_problem_type_spinner"
+        android:background="@android:drawable/editbox_background"
+        >
+
+    </Spinner>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OR"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/or_message_text"
+        android:background="@android:color/white"
+        android:layout_marginTop="-10dp"
+        android:layout_gravity="center"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/or_message_editText"
+        android:hint="Enter problem description"
+        android:textSize="13sp"
+        android:minHeight="50dp"
+        android:textColorHint="@android:color/darker_gray"
+        android:textColor="@android:color/black"
+        android:background="@android:drawable/editbox_background"
+        android:inputType="textMultiLine"/>
+
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"
+        android:id="@+id/loading"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="success"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:id="@+id/success_message"
+        android:visibility="gone"
+        android:textSize="13sp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="50dp"
+        android:id="@+id/done_button"
+        android:textSize="13sp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@android:color/white"
+        android:text="DONE"/>
+
+</LinearLayout>

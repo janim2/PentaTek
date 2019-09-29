@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "327139241184",
+    "firebase_url": "https://pentatek-8ff25.firebaseio.com",
+    "project_id": "pentatek-8ff25",
+    "storage_bucket": "pentatek-8ff25.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327139241184:android:c8b0dc449da83fcc67b485",
+        "android_client_info": {
+          "package_name": "com.uenr.pentatek"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327139241184-nh8el51djerav7emj95mi26u3f03aaln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uenr.pentatek",
+            "certificate_hash": "6b1b5f18b54d718a043c1cb28e2bd518bd08972c"
+          }
+        },
+        {
+          "client_id": "327139241184-ak28mv52st5n3o05kvmf2h524arnig45.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9shB3f85ME4SCDu4bSWVyh_iUowWEkdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327139241184-ak28mv52st5n3o05kvmf2h524arnig45.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

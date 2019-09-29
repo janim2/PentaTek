@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ash_1"
+    tools:context=".One_Last_Step_User">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="3"
+                android:src="@drawable/back" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="One Last Step"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginTop="30dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Car Details"
+            android:paddingLeft="10dp"
+            android:drawableStart="@drawable/car_image"
+            android:drawableLeft="@drawable/car_image"
+            android:paddingRight="10dp"
+            android:layout_gravity="center"
+            android:textSize="13sp"
+            android:drawablePadding="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="-10dp"
+            android:background="@color/ash_1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Type"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textSize="13sp"
+                android:textColor="@color/colorPrimary"
+                android:background="@android:drawable/editbox_background"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Brand"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="brand"
+                android:inputType="textPersonName"
+                android:textSize="13sp"
+                android:textColorHint="@android:color/darker_gray"
+                android:textColor="@color/colorPrimary"
+                android:background="@android:drawable/editbox_background"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Model"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="model"
+                android:inputType="textPersonName"
+                android:textSize="13sp"
+                android:textColorHint="@android:color/darker_gray"
+                android:textColor="@color/colorPrimary"
+                android:background="@android:drawable/editbox_background"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Number plate"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="plate"
+                android:textSize="13sp"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@android:color/darker_gray"
+                android:textColor="@color/colorPrimary"
+                android:background="@android:drawable/editbox_background"/>
+
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:id="@+id/loading"
+                android:layout_marginTop="30dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Success"
+                android:textSize="13sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="ADD VEHICLE"
+                android:layout_marginTop="50dp"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</ScrollView>

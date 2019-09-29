@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ash_1"
+    tools:context=".User_Registration">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginTop="30dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Client Details"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_gravity="center"
+            android:textSize="13sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="-10dp"
+            android:background="@color/ash_1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="First Name"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/name"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="first Name"
+                android:inputType="textPersonName"
+                android:textSize="13sp"
+                android:textColorHint="@android:color/darker_gray"
+                android:textColor="@color/colorPrimary"
+                android:background="@android:drawable/editbox_background"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Last Name"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="last Name"
+                android:inputType="textPersonName"
+                android:textSize="13sp"
+                android:textColorHint="@android:color/darker_gray"
+                android:textColor="@color/colorPrimary"
+                android:background="@android:drawable/editbox_background"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:drawableLeft="@drawable/email"
+                android:drawablePadding="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="email"
+                android:textSize="13sp"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@android:color/darker_gray"
+                android:textColor="@color/colorPrimary"
+                android:background="@android:drawable/editbox_background"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="address"
+                android:textSize="13sp"
+                android:inputType="textMultiLine"
+                android:textColorHint="@android:color/darker_gray"
+                android:textColor="@color/colorPrimary"
+                android:background="@android:drawable/editbox_background"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:drawableLeft="@drawable/lock"
+                android:drawablePadding="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="password"
+                android:textSize="13sp"
+                android:inputType="textPassword"
+                android:textColorHint="@android:color/darker_gray"
+                android:textColor="@color/colorPrimary"
+                android:background="@android:drawable/editbox_background"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirm Password"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="confirm password"
+                android:textSize="13sp"
+                android:inputType="textPassword"
+                android:textColorHint="@android:color/darker_gray"
+                android:textColor="@color/colorPrimary"
+                android:background="@android:drawable/editbox_background"/>
+
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:id="@+id/loading"
+                android:layout_marginTop="30dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Success"
+                android:textSize="13sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="DONE"
+                android:layout_marginTop="50dp"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</ScrollView>
