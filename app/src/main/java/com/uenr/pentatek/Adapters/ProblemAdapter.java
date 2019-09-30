@@ -77,90 +77,12 @@ public class ProblemAdapter extends RecyclerView.Adapter<ProblemAdapter.ViewHold
                 problem_accessor.put("customer_email",itemList.get(position).getEmail());
                 problem_accessor.put("customer_id",itemList.get(position).getCustomer_id());
                 v.getContext().startActivity(gotoProblem_page);
-                Fetch_Vehicle_Problem(itemList.get(position).getCustomer_id());
-                Fetch_Vehicle_Info(itemList.get(position).getCustomer_id());
             }
         });
         }
-
-    private void Fetch_Vehicle_Info(String customer_id) {
-        problem_accessor = new Accessories(context);
-        DatabaseReference getProblem = FirebaseDatabase.getInstance().getReference("cars")
-                .child(customer_id);
-        getProblem.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot child : dataSnapshot.getChildren()){
-                        if(child.getKey().equals("type")){
-                            car_type = child.getValue().toString();
-                            problem_accessor.put("the_car_type", car_type);
-                        }
-                        if(child.getKey().equals("brand")){
-                            car_brand = child.getValue().toString();
-                            problem_accessor.put("the_car_brand", car_brand);
-                        }
-                        if(child.getKey().equals("model")){
-                            car_model = child.getValue().toString();
-                            problem_accessor.put("the_car_model", car_model);
-                        }
-                        if(child.getKey().equals("number_plate")){
-                            car_plate = child.getValue().toString();
-                            problem_accessor.put("the_car_plate", car_plate);
-                        }
-
-                        else{
-//                            Toast.makeText(getActivity(),"Couldn't fetch posts",Toast.LENGTH_LONG).show();
-
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(context,"Cancelled",Toast.LENGTH_LONG).show();
-
-            }
-        });
-    }
-
 
     @Override
     public int getItemCount() {
         return itemList.size();
     }
-
-    private void Fetch_Vehicle_Problem(String key) {
-        problem_accessor = new Accessories(context);
-        DatabaseReference getProblem = FirebaseDatabase.getInstance().getReference("problems")
-                .child("company1").child(key);
-        getProblem.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot child : dataSnapshot.getChildren()){
-                        if(child.getKey().equals("problem_description")){
-                            problem_ = child.getValue().toString();
-                            problem_accessor.put("the_problem", problem_);
-                        }
-
-                        else{
-//                            Toast.makeText(getActivity(),"Couldn't fetch posts",Toast.LENGTH_LONG).show();
-
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(context,"Cancelled",Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-    }
-
-
 }

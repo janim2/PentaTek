@@ -3,10 +3,14 @@ package com.uenr.pentatek;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,6 +22,7 @@ import com.uenr.pentatek.Adapters.ProblemAdapter;
 import com.uenr.pentatek.Models.Problems;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Company_mainActivity extends AppCompatActivity {
 
@@ -26,7 +31,10 @@ public class Company_mainActivity extends AppCompatActivity {
     private RecyclerView.Adapter problems_Adapter;
     private String customer_fname,customer_lname, customer_email,customer_number;
     private Accessories company_accessor;
-
+    Handler thehandler;
+    private TextView no_issues_text;
+    private ImageView refresh;
+    ArrayList<String> isproblem = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +43,54 @@ public class Company_mainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("PentaTek | Company");
         company_accessor = new Accessories(Company_mainActivity.this);
 
+        no_issues_text = findViewById(R.id.no_issues);
+
         problems_RecyclerView = findViewById(R.id.car_problem_recyclerView);
-        //reviews adapter settings starts here
+        refresh = findViewById(R.id.refresh);
+
         if(isNetworkAvailable()){
             getProblem_IDs();
         }else{
             Toast.makeText(Company_mainActivity.this,"No Internet Connection",Toast.LENGTH_LONG).show();
         }
+
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isNetworkAvailable()){
+                    getProblem_IDs();
+                }else{
+                    Toast.makeText(Company_mainActivity.this,"No Internet Connection",Toast.LENGTH_LONG).show();
+                }            }
+        });
+//        thehandler = new Handler();
+//        final int delay = 30000;
+//
+//        thehandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if(isNetworkAvailable()){
+//                    getProblem_IDs();
+//                }
+////                else{
+////                    happen.setVisibility(View.VISIBLE);
+////                    happen.setOnClickListener(new View.OnClickListener() {
+////                        @Override
+////                        public void onClick(View v) {
+////                            if(isNetworkAvailable()){
+////                                happen.setVisibility(View.GONE);
+////                                new Acquiringequipment().execute();
+////                            }else{
+////                                Toast.makeText(MainActivity.this,"No Connection",Toast.LENGTH_LONG).show();
+////
+////                            }}
+////                    });
+////                    return;
+////                }
+//                thehandler.postDelayed(this,delay);
+//            }
+//        },delay);
+
         problems_RecyclerView.setHasFixedSize(true);
 
         problems_Adapter = new ProblemAdapter(getFromDatabase(),Company_mainActivity.this);
@@ -90,7 +139,7 @@ public class Company_mainActivity extends AppCompatActivity {
                             customer_lname = child.getValue().toString();
                         }
 
-                        if(child.getKey().equals("phone_number")){
+                        if(child.getKey().equals("telephone")){
                             customer_number = child.getValue().toString();
                         }
 
@@ -104,10 +153,16 @@ public class Company_mainActivity extends AppCompatActivity {
                         }
                     }
                     String customer_key = key;
-                    Problems obj = new Problems(customer_key,customer_fname,customer_lname,customer_number,customer_email);
-                    problemsArray.add(obj);
-                    problems_RecyclerView.setAdapter(problems_Adapter);
-                    problems_Adapter.notifyDataSetChanged();
+                    if(!isproblem.contains(customer_key)){
+                        Problems obj = new Problems(customer_key,customer_fname,customer_lname,customer_email,customer_number);
+                        problemsArray.add(obj);
+                        problems_RecyclerView.setAdapter(problems_Adapter);
+                        problems_Adapter.notifyDataSetChanged();
+                        isproblem.add(customer_key);
+
+                    }
+                    no_issues_text.setVisibility(View.GONE);
+                    refresh.setVisibility(View.VISIBLE);
                 }
             }
 

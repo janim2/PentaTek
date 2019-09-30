@@ -25,6 +25,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -81,6 +83,7 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
     private String vehicle_problem_, problem_text;
     private DatabaseReference reference;
     private FirebaseAuth mauth;
+    private Accessories user_main_accessor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,7 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
 
         getSupportActionBar().setTitle("PentaTek | User");
 
+        user_main_accessor = new Accessories(User_mainActivity.this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
@@ -110,10 +114,10 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
         distress_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder logout = new AlertDialog.Builder(User_mainActivity.this, R.style.Myalert);
-                logout.setTitle("Confirmation");
-                logout.setMessage("By clicking on YES, you confirm that you are in distress and want help from your automobile company");
-                logout.setNegativeButton("YES", new DialogInterface.OnClickListener() {
+                final AlertDialog.Builder distress = new AlertDialog.Builder(User_mainActivity.this, R.style.Myalert);
+                distress.setTitle("Confirmation");
+                distress.setMessage("By clicking on YES, you confirm that you are in distress and want help from your automobile company");
+                distress.setNegativeButton("YES", new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -126,15 +130,64 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
                     }
                 });
 
-                logout.setPositiveButton("NO", new DialogInterface.OnClickListener() {
+                distress.setPositiveButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                distress.show();
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.logout:
+                final AlertDialog.Builder logout = new AlertDialog.Builder(User_mainActivity.this, R.style.Myalert);
+                logout.setTitle("Logout?");
+                logout.setIcon(getResources().getDrawable(R.drawable.sad_24dp));
+                logout.setMessage("The health of your vehicle is our number one concern. Sorry if we did something to compromise this. Hope you reconsider");
+                logout.setNegativeButton("Logout", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        logout here
+                        if(isNetworkAvailable()){
+                            FirebaseAuth.getInstance().signOut();
+                            user_main_accessor.put("added_car", false);
+                            user_main_accessor.clearStore();
+                            Intent gotoLogin = new Intent(User_mainActivity.this,Login.class);
+                            gotoLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(gotoLogin);
+                        }else{
+                            Toast.makeText(User_mainActivity.this,"No internet connection",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+                logout.setPositiveButton("Stay", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 });
                 logout.show();
-            }
-        });
+                break;
+
+            case R.id.about:
+                startActivity(new Intent(User_mainActivity.this, About.class));
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     protected synchronized void buildGoogleApiClient(){
@@ -282,7 +335,25 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     protected void onStart() {
         super.onStart();
-        displayLocationSettingsRequest(User_mainActivity.this);
+        if(mauth.getCurrentUser() != null){
+            if(user_main_accessor.getString("user_type").equals("User")){
+                if(user_main_accessor.getBoolean("added_car")){
+                    displayLocationSettingsRequest(User_mainActivity.this);
+                }else{
+                    Intent gotoLogin = new Intent(User_mainActivity.this, One_Last_Step_User.class);
+                    gotoLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(gotoLogin);
+                }
+            }else{
+                Intent gotoLogin = new Intent(User_mainActivity.this, Company_mainActivity.class);
+                gotoLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(gotoLogin);
+            }
+        }else{
+            Intent gotoLogin = new Intent(User_mainActivity.this, Login.class);
+            gotoLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(gotoLogin);
+        }
     }
 
     private boolean isNetworkAvailable() {
@@ -327,7 +398,7 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
 
             //        update location of driver
             try{
-                String  userid = "4";//FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String  userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 DatabaseReference drivers = FirebaseDatabase.getInstance().getReference("user_location");
                 GeoFire geoFireAvailable = new GeoFire(drivers);
 

@@ -12,11 +12,32 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="3"
+                android:id="@+id/goBack"
+                android:src="@drawable/back" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Join for free"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:background="@color/colorPrimaryDark"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             />
 
         <TextView
@@ -52,6 +73,7 @@
                 android:hint="first Name"
                 android:inputType="textPersonName"
                 android:textSize="13sp"
+                android:id="@+id/f_name"
                 android:textColorHint="@android:color/darker_gray"
                 android:textColor="@color/colorPrimary"
                 android:background="@android:drawable/editbox_background"/>
@@ -68,6 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:hint="last Name"
+                android:id="@+id/l_name"
                 android:inputType="textPersonName"
                 android:textSize="13sp"
                 android:textColorHint="@android:color/darker_gray"
@@ -90,6 +113,7 @@
                 android:layout_height="40dp"
                 android:hint="email"
                 android:textSize="13sp"
+                android:id="@+id/email"
                 android:inputType="textEmailAddress"
                 android:textColorHint="@android:color/darker_gray"
                 android:textColor="@color/colorPrimary"
@@ -109,6 +133,7 @@
                 android:hint="number"
                 android:textSize="13sp"
                 android:inputType="phone"
+                android:id="@+id/phone_number"
                 android:maxLength="10"
                 android:textColorHint="@android:color/darker_gray"
                 android:textColor="@color/colorPrimary"
@@ -131,6 +156,7 @@
                 android:textSize="13sp"
                 android:inputType="textPassword"
                 android:textColorHint="@android:color/darker_gray"
+                android:id="@+id/password"
                 android:textColor="@color/colorPrimary"
                 android:background="@android:drawable/editbox_background"/>
 
@@ -149,27 +175,34 @@
                 android:textSize="13sp"
                 android:inputType="textPassword"
                 android:textColorHint="@android:color/darker_gray"
+                android:id="@+id/confirm_password"
                 android:textColor="@color/colorPrimary"
                 android:background="@android:drawable/editbox_background"/>
 
             <ProgressBar
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
+                android:visibility="gone"
                 android:id="@+id/loading"
                 android:layout_marginTop="30dp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/success_message"
+                android:visibility="gone"
                 android:text="Success"
+                android:layout_marginTop="30dp"
                 android:textSize="13sp"
                 android:textColor="@color/colorPrimaryDark"
                 android:gravity="center"/>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="DONE"
                 android:layout_marginTop="50dp"
+                android:id="@+id/done_button"
                 android:background="@color/colorPrimaryDark"
                 android:textColor="@android:color/white"
                 android:textSize="13sp"/>

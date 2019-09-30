@@ -61,6 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
+                    android:id="@+id/u_name"
                     android:textColor="@color/colorPrimary"
                     android:text="Name"/>
 
@@ -78,6 +79,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textColor="@color/colorPrimary"
+                    android:id="@+id/u_email"
                     android:text="email"/>
 
                 <TextView
@@ -94,6 +96,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textColor="@color/colorPrimary"
+                    android:id="@+id/u_phone"
                     android:text="number"/>
             </LinearLayout>
 
@@ -150,6 +153,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
+                    android:id="@+id/car_type"
                     android:textColor="@color/colorPrimary"
                     android:text="type"/>
 
@@ -166,6 +170,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
+                    android:id="@+id/car_brand"
                     android:textColor="@color/colorPrimary"
                     android:text="brand"/>
 
@@ -183,6 +188,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textColor="@color/colorPrimary"
+                    android:id="@+id/car_model"
                     android:text="model"/>
 
                 <TextView
@@ -197,6 +203,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/car_plate"
                     android:textSize="14sp"
                     android:textColor="@color/colorPrimary"
                     android:text="plate"/>
@@ -240,6 +247,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorAccent"
                 android:textSize="13sp"
+                android:id="@+id/problem"
                 android:text="Problem description"/>
         </LinearLayout>
 

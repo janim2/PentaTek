@@ -16,16 +16,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".One_Last_Step_User"></activity>
-        <activity android:name=".User_Registration" />
-        <activity android:name=".Company_mainActivity">
+        <activity android:name=".About"
+            android:parentActivityName=".User_mainActivity">
+        </activity>
+        <activity
+            android:name=".Login"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".One_Last_Step_User"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".User_Registration"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Company_mainActivity"></activity>
+        <activity android:name=".User_mainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".User_mainActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -40,6 +51,7 @@
 
         <activity
             android:name=".Automobile_MapsActivity"
+            android:parentActivityName=".Company_mainActivity"
             android:label="@string/title_activity_maps" />
     </application>
 

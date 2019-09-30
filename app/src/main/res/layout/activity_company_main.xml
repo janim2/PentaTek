@@ -61,6 +61,7 @@
                 android:paddingRight="10dp"
                 android:layout_gravity="center"
                 android:textSize="14sp"
+                android:id="@+id/no_issues"
                 android:layout_marginTop="50dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:background="@android:color/white"/>
@@ -81,5 +82,12 @@
             android:id="@+id/car_problem_recyclerView"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:src="@drawable/refresh"
+        android:id="@+id/refresh"
+        android:visibility="gone"/>
 
 </LinearLayout>
