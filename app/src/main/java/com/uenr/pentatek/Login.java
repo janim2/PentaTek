@@ -2,6 +2,7 @@ package com.uenr.pentatek;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
@@ -31,7 +32,8 @@ public class Login extends AppCompatActivity {
     private String semail, spassword, isSelected, auto_mobile_email;
     private RadioButton company_radiobutton, user_radiobutton;
     private Button login_button;
-    private TextView success_message,forgot_password, signup_as_user;
+    private TextView penta_text,email_text, password_text, login_as_text,
+            success_message,forgot_password, signup_as_user;
     private ProgressBar loading;
     private Accessories login_accessor;
     private FirebaseAuth mauth;
@@ -42,8 +44,17 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Typeface breezed_cap =Typeface.createFromAsset(getAssets(),  "fonts/BreezedcapsBoldoblique-Epvj.ttf");
+        Typeface quicksand_light =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Light.ttf");
+        Typeface quicksand_regular =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Regular.ttf");
+
+
         login_accessor = new Accessories(Login.this);
         mauth = FirebaseAuth.getInstance();
+        penta_text = findViewById(R.id.penta_text);
+        email_text = findViewById(R.id.email_text);
+        password_text = findViewById(R.id.password_text);
+        login_as_text = findViewById(R.id.login_as_text);
         emailedit_Text = findViewById(R.id.email_editText);
         passwordedit_Text = findViewById(R.id.password_editText);
         user_radiobutton = findViewById(R.id.user_radio_button);
@@ -53,6 +64,18 @@ public class Login extends AppCompatActivity {
         success_message = findViewById(R.id.success_message);
         forgot_password = findViewById(R.id.forgot_password_text);
         signup_as_user = findViewById(R.id.signup_text);
+
+
+        //setting the fonts
+        penta_text.setTypeface(breezed_cap);
+        email_text.setTypeface(quicksand_regular);
+        password_text.setTypeface(quicksand_regular);
+        login_as_text.setTypeface(quicksand_regular);
+        user_radiobutton.setTypeface(quicksand_light);
+        company_radiobutton.setTypeface(quicksand_light);
+        login_button.setTypeface(quicksand_regular);
+        forgot_password.setTypeface(quicksand_regular);
+        signup_as_user.setTypeface(quicksand_regular);
 
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,18 +1,26 @@
 package com.uenr.pentatek;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -63,38 +71,85 @@ public class Company_mainActivity extends AppCompatActivity {
                     Toast.makeText(Company_mainActivity.this,"No Internet Connection",Toast.LENGTH_LONG).show();
                 }            }
         });
-//        thehandler = new Handler();
-//        final int delay = 30000;
+        thehandler = new Handler();
+        final int delay = 20000;
+
+        thehandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(isNetworkAvailable()){
+                    getProblem_IDs();
+                }
+//                else{
+//                    happen.setVisibility(View.VISIBLE);
+//                    happen.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            if(isNetworkAvailable()){
+//                                happen.setVisibility(View.GONE);
+//                                new Acquiringequipment().execute();
+//                            }else{
+//                                Toast.makeText(MainActivity.this,"No Connection",Toast.LENGTH_LONG).show();
 //
-//        thehandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                if(isNetworkAvailable()){
-//                    getProblem_IDs();
+//                            }}
+//                    });
+//                    return;
 //                }
-////                else{
-////                    happen.setVisibility(View.VISIBLE);
-////                    happen.setOnClickListener(new View.OnClickListener() {
-////                        @Override
-////                        public void onClick(View v) {
-////                            if(isNetworkAvailable()){
-////                                happen.setVisibility(View.GONE);
-////                                new Acquiringequipment().execute();
-////                            }else{
-////                                Toast.makeText(MainActivity.this,"No Connection",Toast.LENGTH_LONG).show();
-////
-////                            }}
-////                    });
-////                    return;
-////                }
-//                thehandler.postDelayed(this,delay);
-//            }
-//        },delay);
+                thehandler.postDelayed(this,delay);
+            }
+        },delay);
 
         problems_RecyclerView.setHasFixedSize(true);
 
         problems_Adapter = new ProblemAdapter(getFromDatabase(),Company_mainActivity.this);
         problems_RecyclerView.setAdapter(problems_Adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.about:
+                startActivity(new Intent(Company_mainActivity.this, About.class));
+                break;
+
+            case R.id.logout:
+                final AlertDialog.Builder logout = new AlertDialog.Builder(Company_mainActivity.this, R.style.Myalert);
+                logout.setTitle("Logout?");
+                logout.setIcon(getResources().getDrawable(R.drawable.sad_24dp));
+                logout.setMessage("Logging out doesn't result in any loss of user data.");
+                logout.setNegativeButton("Logout", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        logout here
+                        if(isNetworkAvailable()){
+                            FirebaseAuth.getInstance().signOut();
+//                            company_accessor.clearStore();
+                            Intent gotoLogin = new Intent(Company_mainActivity.this,Login.class);
+                            gotoLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(gotoLogin);
+                        }else{
+                            Toast.makeText(Company_mainActivity.this,"No internet connection",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+                logout.setPositiveButton("Stay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                logout.show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getProblem_IDs() {
@@ -159,10 +214,9 @@ public class Company_mainActivity extends AppCompatActivity {
                         problems_RecyclerView.setAdapter(problems_Adapter);
                         problems_Adapter.notifyDataSetChanged();
                         isproblem.add(customer_key);
-
                     }
                     no_issues_text.setVisibility(View.GONE);
-                    refresh.setVisibility(View.VISIBLE);
+//                    refresh.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -172,6 +226,12 @@ public class Company_mainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isproblem.clear();
     }
 
     public ArrayList<Problems> getFromDatabase(){

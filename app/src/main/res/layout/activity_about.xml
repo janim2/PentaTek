@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="PentaTek"
-            android:textSize="20sp"
+            android:textSize="30sp"
+            android:id="@+id/penta_text"
             android:textColor="@color/colorPrimaryDark"
             android:gravity="center"/>
 
@@ -26,6 +27,7 @@
             android:layout_height="wrap_content"
             android:text="VERSION 1.0"
             android:gravity="center"
+            android:id="@+id/version_text"
             android:layout_marginTop="10dp"
             android:textColor="@color/colorPrimary"
             android:textSize="13sp"/>
@@ -43,6 +45,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/ash_1"
             android:paddingLeft="10dp"
+            android:id="@+id/group_name_text"
             android:paddingRight="10dp"
             android:layout_marginTop="-10dp"
             android:layout_gravity="center"/>
@@ -54,6 +57,7 @@
             android:textColor="@color/colorPrimary"
             android:gravity="center"
             android:textSize="12sp"
+            android:id="@+id/members_text"
             android:layout_marginTop="10dp"/>
 
         <TextView
@@ -62,7 +66,48 @@
             android:text="Deborah Debrah"
             android:gravity="center"
             android:textSize="14sp"
+            android:id="@+id/name_one_text"
             android:layout_marginTop="30dp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Adane Francis"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:id="@+id/name_two_text"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Samuel Asante Addai"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:id="@+id/name_three_text"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jaja Promise"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:id="@+id/name_four_text"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gideon Peprah"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:id="@+id/name_five_text"
+            android:layout_marginTop="10dp"
             android:textColor="@color/colorPrimaryDark"/>
 
 

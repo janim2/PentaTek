@@ -131,6 +131,17 @@ public class One_Last_Step_User extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(one_last_accessor.getBoolean("added_car")){
+            Intent gotouserPage = new Intent(One_Last_Step_User.this,User_mainActivity.class);
+            gotouserPage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(gotouserPage);
+        }else{
+        }
+    }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

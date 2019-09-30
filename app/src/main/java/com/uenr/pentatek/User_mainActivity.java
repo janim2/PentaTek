@@ -162,8 +162,8 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
 //                        logout here
                         if(isNetworkAvailable()){
                             FirebaseAuth.getInstance().signOut();
-                            user_main_accessor.put("added_car", false);
-                            user_main_accessor.clearStore();
+//                            user_main_accessor.put("added_car", false);
+//                            user_main_accessor.clearStore();
                             Intent gotoLogin = new Intent(User_mainActivity.this,Login.class);
                             gotoLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(gotoLogin);

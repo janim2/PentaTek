@@ -2,6 +2,7 @@ package com.uenr.pentatek;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
@@ -31,11 +32,13 @@ public class User_Registration extends AppCompatActivity {
     private String sfirst_name, slastname, semail, sphone_number,
     spassword, sconfirm_password;
     private Button done_button;
-    private TextView success_message;
+    private TextView join_for_free_text, client_detials_text, first_name_text, last_name_text,
+            email_text, password_text, consfirm_password_text ,success_message;
     private ProgressBar loading;
     private FirebaseAuth mauth;
     private DatabaseReference reference;
     private ImageView goback;
+    private Accessories user_accessor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,19 @@ public class User_Registration extends AppCompatActivity {
         setContentView(R.layout.activity_user__registration);
 
         mauth = FirebaseAuth.getInstance();
+
+        Typeface breezed_cap =Typeface.createFromAsset(getAssets(),  "fonts/BreezedcapsBoldoblique-Epvj.ttf");
+        Typeface quicksand_light =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Light.ttf");
+        Typeface quicksand_regular =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Regular.ttf");
+
+        //texts that inform
+        join_for_free_text = findViewById(R.id.join_for_free_text);
+        client_detials_text = findViewById(R.id.client_details_text);
+        first_name_text = findViewById(R.id.first_name_text);
+        last_name_text = findViewById(R.id.last_name_text);
+        email_text = findViewById(R.id.email_text);
+        password_text = findViewById(R.id.password_text);
+        consfirm_password_text = findViewById(R.id.confirm_password_text);
 
         first_name = findViewById(R.id.f_name);
         last_name = findViewById(R.id.l_name);
@@ -54,6 +70,18 @@ public class User_Registration extends AppCompatActivity {
         success_message = findViewById(R.id.success_message);
         loading = findViewById(R.id.loading);
         goback = findViewById(R.id.goBack);
+        user_accessor = new Accessories(User_Registration.this);
+
+
+        //setting the font
+        join_for_free_text.setTypeface(quicksand_regular);
+        client_detials_text.setTypeface(quicksand_regular);
+        first_name_text.setTypeface(quicksand_regular);
+        last_name_text.setTypeface(quicksand_regular);
+        email_text.setTypeface(quicksand_regular);
+        password_text.setTypeface(quicksand_regular);
+        consfirm_password_text.setTypeface(quicksand_regular);
+        done_button.setTypeface(quicksand_light);
 
         goback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +152,7 @@ public class User_Registration extends AppCompatActivity {
                             success_message.setVisibility(View.VISIBLE);
                             success_message.setTextColor(getResources().getColor(R.color.green));
                             success_message.setText("Registration successful");
+                            user_accessor.put("added_car",false);
                             FirebaseAuth.getInstance().signOut();
                             Intent goToLogin  = new Intent(User_Registration.this, Login.class);
                             goToLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
