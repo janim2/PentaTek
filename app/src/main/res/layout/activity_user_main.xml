@@ -43,29 +43,29 @@
             android:layout_marginTop="5dp"
             tools:context=".Automobile_MapsActivity" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Recent problems"
-            android:textSize="13sp"
-            android:layout_marginTop="30dp"
-            android:textColor="@color/colorPrimary"
-            android:id="@+id/previous_distress"
-            android:textStyle="bold"
-            android:paddingLeft="10dp" />
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Recent problems"-->
+            <!--android:textSize="13sp"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:id="@+id/previous_distress"-->
+            <!--android:textStyle="bold"-->
+            <!--android:paddingLeft="10dp" />-->
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="No Recent problems"
-            android:textSize="13sp"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:textColor="@color/colorPrimaryDark"
-            android:id="@+id/no_previous_distress"
-            android:textStyle="bold"
-            android:paddingLeft="10dp" />
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="No Recent problems"-->
+            <!--android:textSize="13sp"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:gravity="center"-->
+            <!--android:textColor="@color/colorPrimaryDark"-->
+            <!--android:id="@+id/no_previous_distress"-->
+            <!--android:textStyle="bold"-->
+            <!--android:paddingLeft="10dp" />-->
 
         <Button
             android:layout_width="match_parent"

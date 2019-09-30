@@ -3,6 +3,7 @@ package com.uenr.pentatek;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -40,7 +41,7 @@ public class Company_mainActivity extends AppCompatActivity {
     private String customer_fname,customer_lname, customer_email,customer_number;
     private Accessories company_accessor;
     Handler thehandler;
-    private TextView no_issues_text;
+    private TextView no_issues_text, current_description, current_problems;
     private ImageView refresh;
     ArrayList<String> isproblem = new ArrayList<String>();
 
@@ -51,13 +52,26 @@ public class Company_mainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("PentaTek | Company");
         company_accessor = new Accessories(Company_mainActivity.this);
 
+        //        initializing the fonts
+        Typeface breezed_cap =Typeface.createFromAsset(getAssets(),  "fonts/BreezedcapsBoldoblique-Epvj.ttf");
+        Typeface quicksand_light =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Light.ttf");
+        Typeface quicksand_regular =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Regular.ttf");
+
+        current_problems = findViewById(R.id.current_problems_text);
+        current_description = findViewById(R.id.current_description);
         no_issues_text = findViewById(R.id.no_issues);
 
         problems_RecyclerView = findViewById(R.id.car_problem_recyclerView);
         refresh = findViewById(R.id.refresh);
 
+        //setting the font style
+        current_problems.setTypeface(quicksand_regular);
+        current_description.setTypeface(quicksand_light);
+        no_issues_text.setTypeface(quicksand_regular);
+
+//        checking for internet connection
         if(isNetworkAvailable()){
-            getProblem_IDs();
+            getProblem_IDs(); //this is the method that looks for the problems from database
         }else{
             Toast.makeText(Company_mainActivity.this,"No Internet Connection",Toast.LENGTH_LONG).show();
         }
@@ -231,6 +245,12 @@ public class Company_mainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        isproblem.clear();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         isproblem.clear();
     }
 

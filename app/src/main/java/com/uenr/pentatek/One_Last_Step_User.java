@@ -2,6 +2,7 @@ package com.uenr.pentatek;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +32,8 @@ public class One_Last_Step_User extends AppCompatActivity {
     private String[] car_types = {"Saloon","SUV","Hatchback","Pickup","Van","Supercar","Campervan","Minivan","Track"};
     private String car_types_string, car_model_string,car_brand_string, car_number_plate_string;
     private EditText car_brand_editText,car_model_editText,number_plate_editText;
-    private TextView success_message;
+    private TextView success_message,one_last_step_text, car_details_text, car_type_text,
+    car_model_text, car_brand_text,car_number_plate_text;
     private ProgressBar loading;
     private Button addVehicle_button;
     private DatabaseReference add_car_reference;
@@ -44,7 +46,20 @@ public class One_Last_Step_User extends AppCompatActivity {
 
         one_last_accessor = new Accessories(One_Last_Step_User.this);
 
+        //        initializing the fonts
+        Typeface breezed_cap =Typeface.createFromAsset(getAssets(),  "fonts/BreezedcapsBoldoblique-Epvj.ttf");
+        Typeface quicksand_light =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Light.ttf");
+        Typeface quicksand_regular =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Regular.ttf");
+
         mauth = FirebaseAuth.getInstance();
+
+        //the texts that do nothing
+        one_last_step_text  = findViewById(R.id.one_last_step_text);;
+        car_details_text  = findViewById(R.id.car_details_text);;
+        car_type_text  = findViewById(R.id.car_type_text);;
+        car_model_text  = findViewById(R.id.car_model_text);;
+        car_brand_text = findViewById(R.id.car_brand_text);;
+        car_number_plate_text  = findViewById(R.id.number_plate_text);;
 
         goback = findViewById(R.id.goBack);
         cart_type_spinner = findViewById(R.id.car_type_spinner);
@@ -54,6 +69,16 @@ public class One_Last_Step_User extends AppCompatActivity {
         success_message = findViewById(R.id.success_message);
         loading = findViewById(R.id.loading);
         addVehicle_button = findViewById(R.id.add_vehicle_button);
+
+        //setting the font styles
+        one_last_step_text.setTypeface(quicksand_regular);
+        car_details_text.setTypeface(quicksand_light);
+        car_type_text.setTypeface(quicksand_regular);
+        car_model_text.setTypeface(quicksand_regular);
+        car_brand_text.setTypeface(quicksand_regular);
+        car_number_plate_text.setTypeface(quicksand_regular);
+        success_message.setTypeface(quicksand_regular);
+        addVehicle_button.setTypeface(quicksand_regular);
 
         //        setting the adapater for the car type spinner
         cart_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

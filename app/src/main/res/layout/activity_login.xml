@@ -19,8 +19,8 @@
             android:text="PentaTek"
             android:textSize="30sp"
             android:id="@+id/penta_text"
-            android:layout_marginTop="80dp"
-            android:layout_marginBottom="80dp"/>
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

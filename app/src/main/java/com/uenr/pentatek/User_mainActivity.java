@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -69,7 +70,8 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         com.google.android.gms.location.LocationListener {
 
-    private TextView welcome_message;
+//    initializing all variables
+    private TextView welcome_message, location_description;
     private Button distress_button;
     private Dialog view_confirmation_dialogue;
     private GoogleApiClient mGoogleApiClient;
@@ -90,27 +92,44 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main);
 
+//        setting the action bar text
         getSupportActionBar().setTitle("PentaTek | User");
+
+//        initializing the fonts
+        Typeface breezed_cap =Typeface.createFromAsset(getAssets(),  "fonts/BreezedcapsBoldoblique-Epvj.ttf");
+        Typeface quicksand_light =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Light.ttf");
+        Typeface quicksand_regular =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Regular.ttf");
 
         user_main_accessor = new Accessories(User_mainActivity.this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.map); //google maps fragment
 
-        mauth = FirebaseAuth.getInstance();
+        mauth = FirebaseAuth.getInstance(); // creating an instance of firebase authentication
 
+//        finding the widgets from the xml
         welcome_message = findViewById(R.id.welcome_message);
         distress_button = findViewById(R.id.distress_button);
+        location_description = findViewById(R.id.location_description);
 
+        //setting the font styles
+        welcome_message.setTypeface(quicksand_regular);
+        distress_button.setTypeface(quicksand_light);
+        location_description.setTypeface(quicksand_regular);
+
+        //geocoder for finding the user location
         geocoder = new Geocoder(User_mainActivity.this, Locale.getDefault());
 
+        //allowing permissions for location
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(User_mainActivity.this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
         }else{
             mapFragment.getMapAsync(this);
         }
 
+        //used for the popup dialogue
         view_confirmation_dialogue = new Dialog(User_mainActivity.this);
 
+        //controll what clickign the distress button does
         distress_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +141,7 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 //                        logout here
+//                        checking if there is internet connection
                         if(isNetworkAvailable()){
                             showDistress_info_dialogue(User_mainActivity.this);
                             }else{
@@ -133,24 +153,26 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
                 distress.setPositiveButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                        dialog.cancel();// close dialogue when user clicks no
                     }
                 });
-                distress.show();
+                distress.show(); //show the popup window
             }
         });
     }
 
+    //creating a menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    //determing what happens when the menu items are selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.logout:
+            case R.id.logout: //what happens when logout is selexted
                 final AlertDialog.Builder logout = new AlertDialog.Builder(User_mainActivity.this, R.style.Myalert);
                 logout.setTitle("Logout?");
                 logout.setIcon(getResources().getDrawable(R.drawable.sad_24dp));
@@ -182,7 +204,7 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
                 logout.show();
                 break;
 
-            case R.id.about:
+            case R.id.about:// what happens when about is selected
                 startActivity(new Intent(User_mainActivity.this, About.class));
                 break;
 
@@ -190,6 +212,7 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
         return super.onOptionsItemSelected(item);
     }
 
+    //building google Clients
     protected synchronized void buildGoogleApiClient(){
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -240,6 +263,7 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
         });
     }
 
+    //dialogue box creation and setting of items and what they do
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void showDistress_info_dialogue(FragmentActivity activity) {
         final TextView cancelpopup,success_message, problem_description_text, select_text, or_text;

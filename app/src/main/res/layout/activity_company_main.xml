@@ -38,6 +38,7 @@
                 android:paddingRight="10dp"
                 android:layout_gravity="center"
                 android:textSize="13sp"
+                android:id="@+id/current_problems_text"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_marginTop="-10dp"
                 android:background="@android:color/white"/>
@@ -50,6 +51,7 @@
                 android:paddingRight="10dp"
                 android:layout_gravity="center"
                 android:textSize="10sp"
+                android:id="@+id/current_description"
                 android:textColor="@color/colorAccent"
                 android:background="@android:color/white"/>
 

@@ -33,7 +33,7 @@ public class User_Registration extends AppCompatActivity {
     spassword, sconfirm_password;
     private Button done_button;
     private TextView join_for_free_text, client_detials_text, first_name_text, last_name_text,
-            email_text, password_text, consfirm_password_text ,success_message;
+            phone_number_text,email_text, password_text, consfirm_password_text ,success_message;
     private ProgressBar loading;
     private FirebaseAuth mauth;
     private DatabaseReference reference;
@@ -56,6 +56,7 @@ public class User_Registration extends AppCompatActivity {
         client_detials_text = findViewById(R.id.client_details_text);
         first_name_text = findViewById(R.id.first_name_text);
         last_name_text = findViewById(R.id.last_name_text);
+        phone_number_text = findViewById(R.id.phone_number_text);
         email_text = findViewById(R.id.email_text);
         password_text = findViewById(R.id.password_text);
         consfirm_password_text = findViewById(R.id.confirm_password_text);
@@ -78,9 +79,11 @@ public class User_Registration extends AppCompatActivity {
         client_detials_text.setTypeface(quicksand_regular);
         first_name_text.setTypeface(quicksand_regular);
         last_name_text.setTypeface(quicksand_regular);
+        phone_number_text.setTypeface(quicksand_regular);
         email_text.setTypeface(quicksand_regular);
         password_text.setTypeface(quicksand_regular);
         consfirm_password_text.setTypeface(quicksand_regular);
+        success_message.setTypeface(quicksand_regular);
         done_button.setTypeface(quicksand_light);
 
         goback.setOnClickListener(new View.OnClickListener() {

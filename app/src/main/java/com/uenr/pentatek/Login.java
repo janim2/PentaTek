@@ -76,6 +76,7 @@ public class Login extends AppCompatActivity {
         login_button.setTypeface(quicksand_regular);
         forgot_password.setTypeface(quicksand_regular);
         signup_as_user.setTypeface(quicksand_regular);
+        success_message.setTypeface(quicksand_regular);
 
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
