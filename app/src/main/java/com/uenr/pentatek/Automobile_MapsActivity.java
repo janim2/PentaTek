@@ -192,9 +192,9 @@ public class Automobile_MapsActivity extends AppCompatActivity implements OnMapR
                     user.setLongitude(userLocation.longitude);
                     Bitmap bitmap = getBitmapFromVectorDrawable(Automobile_MapsActivity.this,R.drawable.thecar);
                     BitmapDescriptor descriptor =BitmapDescriptorFactory.fromBitmap(bitmap);
-                    
-                    mDriverMarker = mMap.addMarker(new MarkerOptions().position(userLocation).title("customer").icon(descriptor));
 
+                    mDriverMarker = mMap.addMarker(new MarkerOptions().position(userLocation).title("customer").icon(descriptor));
+//                    mMap.animateCamera( CameraUpdateFactory.zoomTo( 12 ) );
                 }
             }
             @Override

@@ -361,14 +361,9 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
         super.onStart();
         if(mauth.getCurrentUser() != null){
             if(user_main_accessor.getString("user_type").equals("User")){
-                if(user_main_accessor.getBoolean("added_car")){
                     displayLocationSettingsRequest(User_mainActivity.this);
-                }else{
-                    Intent gotoLogin = new Intent(User_mainActivity.this, One_Last_Step_User.class);
-                    gotoLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(gotoLogin);
                 }
-            }else{
+            else{
                 Intent gotoLogin = new Intent(User_mainActivity.this, Company_mainActivity.class);
                 gotoLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(gotoLogin);

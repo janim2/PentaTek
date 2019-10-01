@@ -222,7 +222,7 @@ public class Login extends AppCompatActivity {
                     success_message.setVisibility(View.VISIBLE);
                     success_message.setTextColor(getResources().getColor(R.color.green));
                     success_message.setText("Login successful");
-                    Intent goto_one_last_step = new Intent(Login.this,One_Last_Step_User.class);
+                    Intent goto_one_last_step = new Intent(Login.this,User_mainActivity.class);
                     goto_one_last_step.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(goto_one_last_step);
                 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +18,9 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -36,8 +40,9 @@ public class One_Last_Step_User extends AppCompatActivity {
     car_model_text, car_brand_text,car_number_plate_text;
     private ProgressBar loading;
     private Button addVehicle_button;
-    private DatabaseReference add_car_reference;
+    private DatabaseReference add_car_reference, reference;
     private FirebaseAuth mauth;
+    private String user_first_name, user_lastname, user_email, user_telephone, user_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,13 @@ public class One_Last_Step_User extends AppCompatActivity {
         Typeface quicksand_regular =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Regular.ttf");
 
         mauth = FirebaseAuth.getInstance();
+
+        //getting the values from the registration page
+        user_first_name = getIntent().getStringExtra("first_name_from_register");
+        user_lastname = getIntent().getStringExtra("last_name_from_register");
+        user_email = getIntent().getStringExtra("email_from_register");
+        user_telephone = getIntent().getStringExtra("phone_from_register");
+        user_password = getIntent().getStringExtra("password_from_register");
 
         //the texts that do nothing
         one_last_step_text  = findViewById(R.id.one_last_step_text);;
@@ -98,14 +110,7 @@ public class One_Last_Step_User extends AppCompatActivity {
         goback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mauth.getCurrentUser() != null){
-                    Intent intent = new Intent(Intent.ACTION_MAIN);
-                    intent.addCategory(Intent.CATEGORY_HOME);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }else{
-                    finish();
-                }
+                finish();
             }
         });
 
@@ -118,7 +123,8 @@ public class One_Last_Step_User extends AppCompatActivity {
                 if(isNetworkAvailable()){
                     if(!car_brand_string.equals("") && !car_model_string.equals("")
                             && !car_number_plate_string.equals("")){
-                        AddToDatabase(car_types_string,car_brand_string,car_model_string,car_number_plate_string);
+                        //adding user to database
+                        addUserToDatabase(user_first_name,user_lastname,user_email,user_telephone,user_password);
                     }else{
                         loading.setVisibility(View.GONE);
                         success_message.setVisibility(View.VISIBLE);
@@ -135,20 +141,19 @@ public class One_Last_Step_User extends AppCompatActivity {
         });
     }
 
-    private void AddToDatabase(String car_types_string, String car_brand_string, String car_model_string, String car_number_plate_string) {
-        loading.setVisibility(View.VISIBLE);
+    private void AddCarToDatabase(String car_types_string, String car_brand_string, String car_model_string, String car_number_plate_string) {
         try {
             add_car_reference = FirebaseDatabase.getInstance().getReference("cars").child(mauth.getCurrentUser().getUid());
             add_car_reference.child("type").setValue(car_types_string);
             add_car_reference.child("brand").setValue(car_brand_string);
             add_car_reference.child("model").setValue(car_model_string);
             add_car_reference.child("number_plate").setValue(car_number_plate_string);
+            mauth.signOut();
             loading.setVisibility(View.GONE);
             success_message.setVisibility(View.VISIBLE);
             success_message.setTextColor(getResources().getColor(R.color.green));
-            success_message.setText("Car added successfully");
-            one_last_accessor.put("added_car",true);
-            Intent gotouserPage = new Intent(One_Last_Step_User.this,User_mainActivity.class);
+            success_message.setText("Registration Successful");
+            Intent gotouserPage = new Intent(One_Last_Step_User.this,Login.class);
             gotouserPage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(gotouserPage);
         }catch (NullPointerException e){
@@ -156,14 +161,49 @@ public class One_Last_Step_User extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(one_last_accessor.getBoolean("added_car")){
-            Intent gotouserPage = new Intent(One_Last_Step_User.this,User_mainActivity.class);
-            gotouserPage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(gotouserPage);
-        }else{
+    private void addUserToDatabase(final String sfirst_name, final String slastname, final String semail, final String sphone_number, final String spassword) {
+        loading.setVisibility(View.VISIBLE);
+
+        mauth.createUserWithEmailAndPassword(semail, spassword)
+                .addOnCompleteListener(One_Last_Step_User.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                                Toast.makeText(RegisterActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+//                            Toast.makeText(RegisterSchool.this, "Authentication failed." + task.getException(),
+//                                    Toast.LENGTH_SHORT).show();
+                            loading.setVisibility(View.GONE);
+                            success_message.setVisibility(View.VISIBLE);
+                            success_message.setTextColor(getResources().getColor(R.color.red));
+                            success_message.setText("Registration failed");
+                        } else {
+                            reference = FirebaseDatabase.getInstance().getReference("users").child(mauth.getCurrentUser().getUid());
+                            reference.child("first_name").setValue(sfirst_name);
+                            reference.child("last_name").setValue(slastname);
+                            reference.child("email").setValue(semail);
+                            reference.child("telephone").setValue(sphone_number);
+                            addToNotifications();
+                            AddCarToDatabase(car_types_string,car_brand_string,car_model_string,car_number_plate_string);
+                        }
+                    }
+                });
+    }
+
+    private void addToNotifications() {
+        try {
+            Random random = new Random();
+            int a = random.nextInt(987654);
+            String notificationID = "notification" + a+"";
+            reference = FirebaseDatabase.getInstance().getReference("notifications").child(mauth.getCurrentUser().getUid()).child(notificationID);
+            reference.child("image").setValue("WM");
+            reference.child("message").setValue("Welcome to PentaTek. Customer care is our number one focus. Thats why we have made ourselves accessible in times of trouble. Try us out NOW!!!");
+            reference.child("title").setValue("Welcome to PentaTek");
+            reference.child("time").setValue(new Date().toString());
+        }catch (NullPointerException e){
+
         }
     }
 

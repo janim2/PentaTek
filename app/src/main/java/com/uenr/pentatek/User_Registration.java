@@ -107,7 +107,16 @@ public class User_Registration extends AppCompatActivity {
                     if(!sfirst_name.equals("") && !slastname.equals("") && !semail.equals("")
                     && !sphone_number.equals("")){
                         if(spassword.equals(sconfirm_password)){
-                            addToDatabase(sfirst_name,slastname,semail,sphone_number,spassword);
+
+                            //move to one last _step
+                            Intent gotoLasst = new Intent(User_Registration.this, One_Last_Step_User.class);
+                            gotoLasst.putExtra("first_name_from_register",sfirst_name);
+                            gotoLasst.putExtra("last_name_from_register",slastname);
+                            gotoLasst.putExtra("email_from_register",semail);
+                            gotoLasst.putExtra("phone_from_register",sphone_number);
+                            gotoLasst.putExtra("password_from_register",spassword);
+                            startActivity(gotoLasst);
+//                            addToDatabase(sfirst_name,slastname,semail,sphone_number,spassword);
                         }else{
                             loading.setVisibility(View.GONE);
                             success_message.setText("Password mismatch");
@@ -124,60 +133,6 @@ public class User_Registration extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void addToDatabase(final String sfirst_name, final String slastname, final String semail, final String sphone_number, final String spassword) {
-        loading.setVisibility(View.VISIBLE);
-
-        mauth.createUserWithEmailAndPassword(semail, spassword)
-                .addOnCompleteListener(User_Registration.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                                Toast.makeText(RegisterActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-//                            Toast.makeText(RegisterSchool.this, "Authentication failed." + task.getException(),
-//                                    Toast.LENGTH_SHORT).show();
-                            loading.setVisibility(View.GONE);
-                            success_message.setVisibility(View.VISIBLE);
-                            success_message.setTextColor(getResources().getColor(R.color.red));
-                            success_message.setText("Registration failed");
-                        } else {
-                            reference = FirebaseDatabase.getInstance().getReference("users").child(mauth.getCurrentUser().getUid());
-                            reference.child("first_name").setValue(sfirst_name);
-                            reference.child("last_name").setValue(slastname);
-                            reference.child("email").setValue(semail);
-                            reference.child("telephone").setValue(sphone_number);
-                            addToNotifications();
-                            loading.setVisibility(View.GONE);
-                            success_message.setVisibility(View.VISIBLE);
-                            success_message.setTextColor(getResources().getColor(R.color.green));
-                            success_message.setText("Registration successful");
-                            user_accessor.put("added_car",false);
-                            FirebaseAuth.getInstance().signOut();
-                            Intent goToLogin  = new Intent(User_Registration.this, Login.class);
-                            goToLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(goToLogin);
-                        }
-                    }
-                });
-    }
-
-    private void addToNotifications() {
-        try {
-            Random random = new Random();
-            int a = random.nextInt(987654);
-            String notificationID = "notification" + a+"";
-            reference = FirebaseDatabase.getInstance().getReference("notifications").child(mauth.getCurrentUser().getUid()).child(notificationID);
-            reference.child("image").setValue("WM");
-            reference.child("message").setValue("Welcome to PentaTek. Customer care is our number one focus. Thats why we have made ourselves accessible in times of trouble. Try us out NOW!!!");
-            reference.child("title").setValue("Welcome to PentaTek");
-            reference.child("time").setValue(new Date().toString());
-        }catch (NullPointerException e){
-
-        }
     }
 
     private boolean isNetworkAvailable() {

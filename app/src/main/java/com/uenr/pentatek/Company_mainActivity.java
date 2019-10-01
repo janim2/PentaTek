@@ -254,6 +254,15 @@ public class Company_mainActivity extends AppCompatActivity {
         isproblem.clear();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
     public ArrayList<Problems> getFromDatabase(){
         return problemsArray;
     }

@@ -41,6 +41,36 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="MISSION"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@color/ash_1"
+            android:paddingLeft="10dp"
+            android:id="@+id/mission_name_text"
+            android:paddingRight="10dp"
+            android:layout_marginTop="-10dp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Our mission as an automobile company is to fervently serve and seek for the welfare of our customers by providing them with an excellent app that would send them warning signals in times of danger"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:id="@+id/mission_text"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginTop="50dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="GROUP 2"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/ash_1"

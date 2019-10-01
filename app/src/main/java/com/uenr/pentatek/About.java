@@ -10,7 +10,8 @@ public class About extends AppCompatActivity {
 
 //    initialization of variables that would be used
     private TextView penta_text, version_text, group_name_text, members_text,
-    name_one_text, name_two_text, name_three_text, name_four_text, name_five_text;
+    name_one_text, name_two_text, name_three_text, name_four_text, name_five_text,
+    mission_name_text, mission_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,8 @@ public class About extends AppCompatActivity {
         name_three_text = findViewById(R.id.name_three_text);
         name_four_text = findViewById(R.id.name_four_text);
         name_five_text = findViewById(R.id.name_five_text);
+        mission_name_text = findViewById(R.id.mission_name_text);
+        mission_text = findViewById(R.id.mission_text);
 
         //setting the font style
         penta_text.setTypeface(breezed_cap);
@@ -46,5 +49,7 @@ public class About extends AppCompatActivity {
         name_three_text.setTypeface(quicksand_regular);
         name_four_text.setTypeface(quicksand_regular);
         name_five_text.setTypeface(quicksand_regular);
+        mission_name_text.setTypeface(quicksand_regular);
+        mission_name_text.setTypeface(quicksand_light);
     }
 }

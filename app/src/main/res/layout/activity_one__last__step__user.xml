@@ -160,7 +160,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="ADD VEHICLE"
+                android:text="DONE"
                 android:layout_marginTop="50dp"
                 android:id="@+id/add_vehicle_button"
                 android:background="@color/colorPrimaryDark"

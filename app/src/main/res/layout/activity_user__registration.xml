@@ -208,7 +208,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="DONE"
+                android:text="NEXT"
                 android:layout_marginTop="50dp"
                 android:id="@+id/done_button"
                 android:background="@color/colorPrimaryDark"
