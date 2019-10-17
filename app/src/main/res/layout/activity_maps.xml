@@ -7,6 +7,25 @@
     android:orientation="vertical"
     android:background="@color/ash_1">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginTop="30dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Client Current Location"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_gravity="center"
+        android:textSize="13sp"
+        android:id="@+id/client_location_do_nothing"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginTop="-10dp"
+        android:background="@color/ash_1"/>
 
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,6 +33,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:layout_marginTop="10dp"
             />
 
         <ScrollView
@@ -267,6 +287,28 @@
                         android:id="@+id/problem"
                         android:text="Problem description"/>
                 </LinearLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="PROCESS REQUEST"
+                    android:textSize="13sp"
+                    android:id="@+id/process_request_button"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginTop="20dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dismiss request"
+                    android:padding="20dp"
+                    android:textSize="14sp"
+                    android:drawablePadding="20dp"
+                    android:id="@+id/dismiss_request"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/delete"
+                    android:textColor="@color/colorPrimary"/>
 
             </LinearLayout>
 

@@ -1,14 +1,18 @@
 package com.uenr.pentatek;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.location.Location;
@@ -18,14 +22,23 @@ import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +55,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,18 +63,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 public class Automobile_MapsActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
 
     private GoogleMap mMap;
     private String customer_fname,customer_lname, customer_phone, customer_email,
-    getCustomer_id, car_type, car_brand, car_model, car_plate, the_problem;
+    getCustomer_id, car_type, car_brand, car_model, car_plate, the_problem, prize_text;
 
-    private TextView user_name_textview, user_phone_textview,user_email_textview,
+    private TextView client_location_do_nothing_textview,user_name_textview, user_phone_textview,user_email_textview,
     car_type_textview, car_brand_textview,car_model_textview, car_plate_textview,problem_textview,
     clent_details_do_nothing,user_name_do_nothing,email_do_nothing,phone_do_nothing,cartype_do_nothing,car_brand_do_nothing,
-    car_model_do_nothing,car_plate_do_nothing, car_details_do_nothing, problem_do_nothing;
+    car_model_do_nothing,car_plate_do_nothing, car_details_do_nothing, problem_do_nothing, dismissRequest_textview;
     private Accessories automobile_accessor;
     private DatabaseReference userlocation_reference;
     private Marker mDriverMarker;
@@ -68,6 +84,11 @@ public class Automobile_MapsActivity extends AppCompatActivity implements OnMapR
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private SupportMapFragment mapFragment;
+    private Button processRequestButton;
+    private DatabaseReference reference;
+    private FirebaseAuth mAuth;
+    private Dialog view_process_dialogue;
+    private Typeface quicksand_light,quicksand_regular;
 
 
 
@@ -77,11 +98,16 @@ public class Automobile_MapsActivity extends AppCompatActivity implements OnMapR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        //firebase authentication
+        mAuth = FirebaseAuth.getInstance();
+
+        //initializing the dialogue
+        view_process_dialogue = new Dialog(Automobile_MapsActivity.this);
+
         //        initializing the fonts
         Typeface breezed_cap =Typeface.createFromAsset(getAssets(),  "fonts/BreezedcapsBoldoblique-Epvj.ttf");
-        Typeface quicksand_light =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Light.ttf");
-        Typeface quicksand_regular =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Regular.ttf");
-
+        quicksand_light =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Light.ttf");
+        quicksand_regular =Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Regular.ttf");
 
         automobile_accessor = new Accessories(Automobile_MapsActivity.this);
         getSupportActionBar().setTitle("PentaTek | Map");
@@ -106,6 +132,7 @@ public class Automobile_MapsActivity extends AppCompatActivity implements OnMapR
 //        the_problem = automobile_accessor.getString("the_problem");
 
         //the textviews that do nothing
+        client_location_do_nothing_textview = findViewById(R.id.client_location_do_nothing);
         clent_details_do_nothing = findViewById(R.id.client_details_do_nothing);
         user_name_do_nothing = findViewById(R.id.name_do_nothing);
         email_do_nothing = findViewById(R.id.email_do_nothing);
@@ -126,12 +153,15 @@ public class Automobile_MapsActivity extends AppCompatActivity implements OnMapR
         car_model_textview = findViewById(R.id.car_model);
         car_plate_textview = findViewById(R.id.car_plate);
         problem_textview = findViewById(R.id.problem);
+        dismissRequest_textview = findViewById(R.id.dismiss_request);
+        processRequestButton = findViewById(R.id.process_request_button);
 
         user_name_textview.setText(customer_fname + " " + customer_lname);
         user_phone_textview.setText(customer_phone);
         user_email_textview.setText(customer_email);
 
         //setting the font style
+        client_location_do_nothing_textview.setTypeface(quicksand_light);
         clent_details_do_nothing.setTypeface(quicksand_light);
         user_name_do_nothing.setTypeface(quicksand_regular);
         email_do_nothing.setTypeface(quicksand_regular);
@@ -142,9 +172,149 @@ public class Automobile_MapsActivity extends AppCompatActivity implements OnMapR
         car_model_do_nothing.setTypeface(quicksand_regular);
         car_plate_do_nothing.setTypeface(quicksand_regular);
         problem_do_nothing.setTypeface(quicksand_light);
+        dismissRequest_textview.setTypeface(quicksand_light);
+        processRequestButton.setTypeface(quicksand_regular);
+
         if (isNetworkAvailable()){
             findUserLocation();
         }
+
+
+        //what happens when you click on the process button
+        processRequestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOrocess_dialogue(Automobile_MapsActivity.this);
+            }
+        });
+
+
+        //what happens when you click on the dismiss request button.
+        dismissRequest_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    final AlertDialog.Builder dismiss_ = new AlertDialog.Builder(Automobile_MapsActivity.this, R.style.Myalert);
+                dismiss_.setTitle("Dismiss Request?");
+                dismiss_.setIcon(getResources().getDrawable(R.drawable.sad_24dp));
+                dismiss_.setMessage("Dismissing a request means that this user problem would be considered " +
+                            "as a false request.");
+                dismiss_.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+//                        logout here
+                            if(isNetworkAvailable()){
+                                RemoveProblem_();
+                            }else{
+                                Toast.makeText(Automobile_MapsActivity.this,"No internet connection",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+                dismiss_.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                dismiss_.show();
+                }
+        });
+    }
+
+
+    //this removes the problem from the database
+    private void RemoveProblem_() {
+        reference = FirebaseDatabase.getInstance().getReference("problems").child("company1")
+                .child(getCustomer_id);
+        reference.removeValue();
+        Intent goto_company_mainActivity = new Intent(Automobile_MapsActivity.this, Company_mainActivity.class);
+        goto_company_mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(goto_company_mainActivity);
+        Toast.makeText(Automobile_MapsActivity.this, "Problem Dismissed", Toast.LENGTH_LONG).show();
+    }
+
+    //this removes from problems node and moves it to the recent problems node
+    private void RemoveProblem_and_record(String prize_text) {
+        Random generate_id = new Random();
+        int no = generate_id.nextInt(455);
+        String problem_id = "recent"+getCustomer_id+no+"";
+        reference = FirebaseDatabase.getInstance().getReference("problems").child("company1")
+                .child(getCustomer_id);
+        DatabaseReference recent_problems = FirebaseDatabase.getInstance().getReference("recent_problems")
+                .child(getCustomer_id).child(problem_id);
+        recent_problems.child("problem_description").setValue(the_problem);
+        recent_problems.child("problem_status").setValue("complete");
+        recent_problems.child("prize").setValue(prize_text);
+        reference.removeValue();
+        Intent goto_company_mainActivity = new Intent(Automobile_MapsActivity.this, Company_mainActivity.class);
+        goto_company_mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(goto_company_mainActivity);
+        Toast.makeText(Automobile_MapsActivity.this, "Transaction Complete", Toast.LENGTH_LONG).show();
+    }
+
+    private void showOrocess_dialogue(FragmentActivity activity) {
+        final TextView cancelpopup,success_message, problem_description_text, select_text, or_text;
+        final EditText problem_statement_editText;
+        final Button done_button;
+        final ProgressBar loading;
+
+        view_process_dialogue.setContentView(R.layout.custom_processing_popup);
+        cancelpopup = (TextView)view_process_dialogue.findViewById(R.id.cancel);
+        success_message = (TextView)view_process_dialogue.findViewById(R.id.success_message);
+        or_text = (TextView) view_process_dialogue.findViewById(R.id.or_message_text);
+        problem_statement_editText = (EditText) view_process_dialogue.findViewById(R.id.or_message_editText);
+        done_button = (Button)view_process_dialogue.findViewById(R.id.done_button);
+        loading = (ProgressBar) view_process_dialogue.findViewById(R.id.loading);
+
+        cancelpopup.setTypeface(quicksand_light);
+        success_message.setTypeface(quicksand_regular);
+        or_text.setTypeface(quicksand_light);
+        done_button.setTypeface(quicksand_regular);
+
+        cancelpopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view_process_dialogue.dismiss();
+            }
+        });
+
+
+        done_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isNetworkAvailable()){
+                    prize_text = problem_statement_editText.getText().toString().trim();
+                    if(!prize_text.equals("")){
+                        loading.setVisibility(View.VISIBLE);
+                        loading.setVisibility(View.GONE);
+                        success_message.setText("Waiting for payment");
+                        RemoveProblem_and_record(prize_text);
+                        success_message.setText("Payment Received.");
+                        success_message.setTextColor(getResources().getColor(R.color.green));
+                        success_message.setVisibility(View.VISIBLE);
+                        view_process_dialogue.dismiss();
+                    }else{
+                        loading.setVisibility(View.VISIBLE);
+                        loading.setVisibility(View.GONE);
+                        success_message.setText("Failed");
+                        success_message.setTextColor(getResources().getColor(R.color.red));
+                        success_message.setVisibility(View.VISIBLE);
+                        view_process_dialogue.dismiss();
+                    }
+                }else{
+                    success_message.setText("No internet connection");
+                    success_message.setTextColor(getResources().getColor(R.color.red));
+                    success_message.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(view_process_dialogue.getWindow()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
+        }
+        view_process_dialogue.show();
     }
 
 

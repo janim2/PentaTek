@@ -6,15 +6,31 @@
     android:id="@+id/attachment_layout"
     android:padding="10dp">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Customer name"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="14sp"
-        android:id="@+id/customer_name"
-        android:drawablePadding="10dp"
-        android:drawableLeft="@drawable/name"/>
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Customer name"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:id="@+id/customer_name"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/name"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10dp"
+            android:text="processing"
+            android:gravity="right"
+            android:textColor="@color/colorPrimary"
+            android:layout_weight="2"/>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"

@@ -23,6 +23,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -56,11 +57,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.uenr.pentatek.Adapters.ProblemAdapter;
+import com.uenr.pentatek.Adapters.Recent_ProblemAdapter;
+import com.uenr.pentatek.Models.Problems;
+import com.uenr.pentatek.Models.Recent_Problems;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -71,7 +79,7 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
         com.google.android.gms.location.LocationListener {
 
 //    initializing all variables
-    private TextView welcome_message, location_description;
+    private TextView welcome_message, location_description, previous_distress_, no_distress_text;
     private Button distress_button;
     private Dialog view_confirmation_dialogue;
     private GoogleApiClient mGoogleApiClient;
@@ -86,6 +94,11 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
     private DatabaseReference reference;
     private FirebaseAuth mauth;
     private Accessories user_main_accessor;
+    private RecyclerView recent_recylcer_view;
+    private ArrayList recent_problemsArray = new ArrayList<Recent_Problems>();
+    private RecyclerView.Adapter recent_problems_Adapter;
+    private ArrayList<String> isrecentproblem = new ArrayList<String>();
+    private String problem_description, problem_status, problem_prize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,11 +123,16 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
         welcome_message = findViewById(R.id.welcome_message);
         distress_button = findViewById(R.id.distress_button);
         location_description = findViewById(R.id.location_description);
+        previous_distress_ = findViewById(R.id.recent_distress);
+        no_distress_text = findViewById(R.id.no_recent_distress);
+        recent_recylcer_view = findViewById(R.id.recent_problem_recyclerView);
 
         //setting the font styles
         welcome_message.setTypeface(quicksand_regular);
         distress_button.setTypeface(quicksand_light);
         location_description.setTypeface(quicksand_regular);
+        previous_distress_.setTypeface(quicksand_light);
+        no_distress_text.setTypeface(quicksand_regular);
 
         //geocoder for finding the user location
         geocoder = new Geocoder(User_mainActivity.this, Locale.getDefault());
@@ -159,6 +177,92 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
                 distress.show(); //show the popup window
             }
         });
+
+        //do this when you start
+        if(isNetworkAvailable()){
+            getRecent_Problem_IDs();
+        }else{
+            Toast.makeText(User_mainActivity.this,"No internet connection", Toast.LENGTH_LONG).show();
+        }
+
+        //setting the recyclerview
+        recent_recylcer_view.setHasFixedSize(true);
+        recent_problems_Adapter = new Recent_ProblemAdapter(getRecentFromDatabase(),User_mainActivity.this);
+        recent_recylcer_view.setAdapter(recent_problems_Adapter);
+    }
+
+    private void getRecent_Problem_IDs() {
+        try{
+            DatabaseReference getProblem = FirebaseDatabase.getInstance().getReference("recent_problems")
+                    .child(mauth.getCurrentUser().getUid());
+
+            getProblem.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        for(DataSnapshot child : dataSnapshot.getChildren()){
+                            Fetch_Recent_details(child.getKey());
+                        }
+                    }else{
+//                    Toast.makeText(getActivity(),"Cannot get ID",Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(User_mainActivity.this,"Cancelled",Toast.LENGTH_LONG).show();
+                }
+            });
+        }catch (NullPointerException e){
+
+        }
+    }
+
+    private void Fetch_Recent_details(final String key) {
+        DatabaseReference getRecent_Problem_details = FirebaseDatabase.getInstance().getReference("recent_problems")
+                .child(mauth.getCurrentUser().getUid()).child(key);
+        getRecent_Problem_details.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot child : dataSnapshot.getChildren()){
+                        if(child.getKey().equals("problem_description")){
+                            problem_description = child.getValue().toString();
+                        }
+
+                        if(child.getKey().equals("problem_status")){
+                            problem_status = child.getValue().toString();
+                        }
+
+                        if(child.getKey().equals("prize")){
+                            problem_prize = child.getValue().toString();
+                        }
+
+                        else{
+//                            Toast.makeText(getActivity(),"Couldn't fetch posts",Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+                    String problem_key = key;
+                    Recent_Problems obj = new Recent_Problems(problem_key,problem_description,problem_prize,problem_status);
+                    recent_problemsArray.add(obj);
+                    recent_recylcer_view.setAdapter(recent_problems_Adapter);
+                    recent_problems_Adapter.notifyDataSetChanged();
+                    no_distress_text.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(User_mainActivity.this,"Cancelled",Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
+
+    public ArrayList<Recent_Problems> getRecentFromDatabase(){
+        return recent_problemsArray;
     }
 
     //creating a menu
