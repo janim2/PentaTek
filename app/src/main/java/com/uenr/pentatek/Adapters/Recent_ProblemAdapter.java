@@ -53,7 +53,7 @@ public class Recent_ProblemAdapter extends RecyclerView.Adapter<Recent_ProblemAd
 //        message.setTypeface(lovelo);
 
         problem_description.setText(itemList.get(position).getProblem_description());
-        prize.setText(itemList.get(position).getPrize());
+        prize.setText("Ghc " + itemList.get(position).getPrize());
         status.setText(itemList.get(position).getStatus());
         }
 

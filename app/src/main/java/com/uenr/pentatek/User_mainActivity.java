@@ -15,6 +15,7 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -99,6 +100,7 @@ public class User_mainActivity extends AppCompatActivity implements OnMapReadyCa
     private RecyclerView.Adapter recent_problems_Adapter;
     private ArrayList<String> isrecentproblem = new ArrayList<String>();
     private String problem_description, problem_status, problem_prize;
+    private Handler thehandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
